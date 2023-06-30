@@ -40,10 +40,10 @@ class NTAKOrderItem
         NTAKCategory    $category,
         NTAKSubcategory $subcategory,
         NTAKVat         $vat,
-        int             $price,
+        float           $price,
         NTAKAmount      $amountType,
         float           $amount,
-        int             $quantity,
+        float           $quantity,
         Carbon          $when
     ) {
         $this->name         = $name;
@@ -79,7 +79,7 @@ class NTAKOrderItem
             'mennyiseg'         => $this->amount,
             'tetelszam'         => $this->quantity,
             'rendelesIdopontja' => $this->when->timezone('Europe/Budapest')->toIso8601String(),
-            'tetelOsszesito'    => $this->quantity * $this->price,
+            'tetelOsszesito'    => round($this->quantity * $this->price),
         ];
     }
 
@@ -91,7 +91,7 @@ class NTAKOrderItem
      * @param  Carbon  $when
      * @return array
      */
-    public static function buildDiscountRequest(NTAKVat $vat, int $price, Carbon $when): array
+    public static function buildDiscountRequest(NTAKVat $vat, float $price, Carbon $when): array
     {
         return (
             new static(
@@ -116,7 +116,7 @@ class NTAKOrderItem
      * @param  Carbon  $when
      * @return array
      */
-    public static function buildServiceFeeRequest(NTAKVat $vat, int $price, Carbon $when): array
+    public static function buildServiceFeeRequest(NTAKVat $vat, float $price, Carbon $when): array
     {
         return (
             new static(

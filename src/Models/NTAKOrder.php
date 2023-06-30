@@ -218,7 +218,7 @@ class NTAKOrder
         if ($this->orderType != NTAKOrderType::SZTORNO()) {
             $total = $this->totalOfOrderItems($this->orderItems);
 
-            return $total + $total * $this->serviceFee / 100;
+            return round($total + $total * $this->serviceFee / 100);
         }
 
         return 0;
@@ -238,7 +238,7 @@ class NTAKOrder
         if ($this->orderType != NTAKOrderType::SZTORNO()) {
             $total = $this->totalOfOrderItemsWithDiscount($this->orderItems);
 
-            return $total + $total * $this->serviceFee / 100;
+            return round($total + $total * $this->serviceFee / 100);
         }
 
         return 0;
@@ -350,7 +350,7 @@ class NTAKOrder
         return array_reduce(
             $orderItems,
             function (int $carry, NTAKOrderItem $orderItem) {
-                return $carry + $orderItem->price * $orderItem->quantity;
+                return $carry + round($orderItem->price * $orderItem->quantity);
             },
             0
         );
@@ -367,7 +367,7 @@ class NTAKOrder
         return array_reduce(
             $orderItems,
             function (int $carry, NTAKOrderItem $orderItem) {
-                $price = ($orderItem->price * $orderItem->quantity) *
+                $price = round($orderItem->price * $orderItem->quantity) *
                          (1 - $this->discount / 100);
 
                 return $carry + $price;
